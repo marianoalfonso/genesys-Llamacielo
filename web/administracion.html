@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Administrador - Llamacielo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/socicon.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/icofont/icofont.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/stack-interface.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,400i,500,600,700" rel="stylesheet">
+
+    <style>
+        ul li {
+            cursor: pointer;
+        }
+        
+        fieldset.scheduler-border {
+            border: 1px solid #f3eeee !important;
+            padding: 0 0 0 2em !important;
+            margin: 0 0 1.5em 0 !important;
+            -webkit-box-shadow: 0px 0px 0px 0px #000;
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+        
+        legend {
+            margin-bottom: 0 !important;
+        }
+        
+        legend.scheduler-border {
+            font-size: 1.2em !important;
+            font-weight: bold !important;
+            text-align: center !important;
+            width: auto;
+            padding: 0 10px;
+            border-bottom: none;
+        }
+        
+        form {
+            max-width: 93%;
+        }
+        
+        button.btn.type--uppercase,
+        input[type="submit"].btn.type--uppercase {
+            letter-spacing: .5px;
+            margin-right: -0.5px;
+            margin-top: -20px;
+        }
+    </style>
+
+
+</head>
+
+<body data-smooth-scroll-offset="77">
+
+    <div class="page-loader">
+        <div class="loader"></div>
+    </div>
+
+
+    <div class="nav-container">
+        <div>
+            <div class="bar bar--sm visible-xs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3 col-md-2">
+                            <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo.png"> <img class="logo logo-light" alt="logo" src="img/logo.png"> </a>
+                        </div>
+                        <div class="col-9 col-md-10 text-right">
+                            <a href="#" class="hamburger-toggle" data-toggle-class="#menu1;hidden-xs hidden-sm"> <i class="icon icon--sm stack-interface stack-menu"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav id="menu1" class="bar bar-1 hidden-xs bar--transparent bar--absolute">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-2 hidden-xs">
+                            <div class="bar__module">
+                                <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo.png"> <img class="logo logo-light" alt="logo" src="img/logo.png"> </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-11 col-md-12 text-right text-left-xs text-left-sm">
+                            <div class="bar__module">
+                                <ul id="menuUsuario" class="menu-horizontal text-left">
+                                    <!-- usuario logueado -->
+                                    <li>
+                                        <i class="icofont-key icon-roles text-primary"></i> <span id="usuarioRol"><strong></strong></span>
+                                    </li>
+
+                                    <li class="dropdown">
+                                        <i class="icofont-ui-user text-primary"></i> <span class="dropdown__trigger" id="usuarioNombre"></span>
+                                        <div class="dropdown__container">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="dropdown__content col-lg-2 col-md-4">
+                                                        <ul class="menu-vertical">
+                                                            <li id="btnTablaUsuarios">Gestión de usuarios</li>
+                                                            <li>Generar cierre</li>
+                                                            <li>Ver liquidaciones</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bar__module">
+
+                                <!-- btn login -->
+                                <!-- <a id="btnLogin" class="btn btn--sm btn--primary type--uppercase hidden" data-modal-index="0"> <span class="btn__text">
+                                    Login
+                                </span> </a>-->
+
+                                <!-- btn logout -->
+                                <a id="btnLogout" class="btn btn--sm btn--primary type--uppercase"> <span class="btn__text">
+                                    Salir
+                                </span> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="main-container">
+        <section class="cover height-60 imagebg parallax text-center parallax" data-gradient-bg="#1A2980,#02AAB0,#5f2c82,#26D0CE"><canvas id="granim-2" width="0" height="0"></canvas>
+            <div class="background-image-holder">
+                <img alt="background" src="img/bg-hero-adm.jpg" />
+            </div>
+            <div class="container pos-vertical-center">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1> Administración de Datos </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- estadisticas -->
+        <section id="estadisticas" class="bg-white space--md--datos">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="feature feature-2 boxed boxed--border text-center bg-primary text-white">
+                            <span id="uT" class="counter"></span>
+                            <p> USUARIOS TOTALES </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature feature-2 boxed boxed--border text-center bg-primary text-white">
+                            <span id="uA" class="counter"></span>
+                            <p> USUARIOS ACTIVOS </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature feature-2 boxed boxed--border text-center bg-primary text-white">
+                            <span id="uI" class="counter"></span>
+                            <p> USUARIOS INACTIVOS </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="feature feature-2 boxed boxed--border text-center bg-primary text-white">
+                            <span id="uAdm" class="counter"></span>
+                            <p> USUARIOS ADMINISTRADORES </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature feature-2 boxed boxed--border text-center bg-primary text-white">
+                            <span id="uTel" class="counter"></span>
+                            <p> USUARIOS TELEMARKETER </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature feature-2 boxed boxed--border text-center bg-primary text-white">
+                            <span id="uO" class="counter"></span>
+                            <p> USUARIOS ONG'S </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- tabla de usuarios -->
+        <section class="bg--white space--xxs">
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div id="tablaUsuarios" class="col-md-12 text-center">
+
+                        <!-- btn alta usuario -->
+                        <div class="text-left">
+                            <a id="btnAltaUsuario" class="btn btn--sm btn--primary text-white" data-modal-index="0">Alta de Usuario</a>
+                        </div>
+
+                        <div class="">
+                        </div>
+
+                        <!-- tabla para mostrar datos BD -->
+                        <div class="table-responsive-sm mt-20">
+                            <table id="tablaUsuarios2" class="border--round table--alternate-row">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>ID</th>
+                                        <th>PERFIL</th>
+                                        <th>NOMBRE</th>
+                                        <th>DNI</th>
+                                        <th>PASSWORD</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>ACTIVO</th>
+                                        <th>EMAIL</th>
+                                        <th>ACCION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyUsuarios">
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center space--sm footer-5 bg--dark">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-12 text-center">
+                        <ul class="social-list list-inline list--hover">
+                            <li><a href="#"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
+                            <li><a href="#"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
+                            <li><a href="#"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+
+        <!-- modal form alta / modificaciones usuarios -->
+        <div class="modal-container" data-modal-index="0">
+            <div class="modal-content section-modal">
+                <section class="unpad ">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="boxed boxed--lg bg--white text-center feature">
+                                    <div class="modal-close modal-close-cross"></div>
+                                    <div class="feature__body">
+                                        <!-- form alta / modifiaciones usuario -->
+                                        <fieldset class="scheduler-border">
+                                            <legend id="legend" class="scheduler-border"></legend>
+
+                                            <form id="form-editable">
+                                                <div class="row">
+
+                                                    <!-- ID de usuario -->
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" id="idUsuario" name="usuario_id" value="">
+                                                    </div>
+
+                                                    <!-- Fecha de inicio usuario -->
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" id="inputFechaInicioUsuario" name="usuario_fechaInicio" value="">
+                                                    </div>
+
+
+                                                    <!-- Perfil del Usuario -->
+                                                    <div class="col-md-12 text-left">
+                                                        <div class="input-select mb-3">
+                                                            <select id="inputPerfilUsuario" name="usuario_tipo">
+                                                                <!--<option selected value="default">Perfil de Usuario</option>-->
+                                                                <option value="1">Administrador</option>
+                                                                <option value="2">Telemarketer</option>
+                                                                <option value="3">ONG</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                    <!--<div class="col-md-12">
+                                                        <input type="hidden" id="inputPerfilUsuarioHidden" name="usuario_tipo" value="">
+                                                    </div>-->
+
+                                                    <!-- usuario nombre usuario -->
+                                                    <div class="col-md-12 text-left">
+                                                        <input type="text" id="inputUsuarioNombre" name="usuario_nombre" value="" placeholder="Nombre Y Apellido" maxlength="90">
+                                                    </div>
+
+                                                    <!-- usuario numero de documento -->
+                                                    <div class="col-md-12 text-left">
+                                                        <input type="number" id="inputDniUsuario" name="usuario_dni" placeholder="Número De Documento" data-mask="00000000">
+                                                    </div>
+
+                                                    <!-- usuario password -->
+                                                    <div class="col-md-12 text-left">
+                                                        <div class="inner-addon right-addon">
+                                                            <input type="password" id="inputPasswordUsuario" name="usuario_password" value="" placeholder="Ingrese Password" title="Debe cargar el password" autocomplete="off">
+                                                            <i id="togglePassword" class="icofont-eye-blocked"></i>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- fecha inicio -->
+                                                    <!--<div id="inputFechaUsuario" class="col-md-12 hidden">
+                                                        <input type="date" name="usuario_fechaInicio" value="" placeholder="Ingrese Fecha De Inicio">
+                                                    </div>-->
+
+                                                    <!-- Usuario Estado -->
+                                                    <div class="col-md-12 text-left">
+                                                        <div class="input-select mb-3">
+                                                            <select id="inputEstadoUsuario" name="usuario_estado">
+                                                               <!-- <option selected value="default">Estado de Usuario</option>-->
+                                                                <option value="1">Activo</option>
+                                                                <option value="0">Desactivado</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                    <!--<div class="col-md-12">
+                                                        <input type="hidden" id="inputEstadoUsuarioHidden" name="usuario_estado" value="">
+                                                    </div>-->
+
+                                                    <!-- Email -->
+                                                    <div class="col-md-12 text-left">
+                                                        <input type="email" id="inputEmailUsuario" name="usuario_email" placeholder="Email" title="Debe ingresar un email" required>
+                                                    </div>
+
+                                                    <!-- alta usuario -->
+                                                    <div class="col-md-12">
+                                                        <a id="btnAltaUsuarioForm" class="btn width-100 btn--primary type--uppercase text-white hidden mb-2 mt-1" type="">Cargar alta</a>
+                                                    </div>
+
+                                                    <!-- modificar usuario -->
+                                                    <div class="col-md-12">
+                                                        <a id="btnModificarUsuario" class="btn width-100 btn--primary type--uppercase text-white hidden mb-4 mt--10" type="">Cargar modificación</a>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="justify-content-center vh-100 align-items-center">
+                                                    <div id="mensaje" class="hidden mb--1"></div>
+                                                    <div id="loader" class="form-contacto-cargando hidden mb-4">
+                                                        <img src="img/loader.gif" alt="">
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </fieldset>
+                                        <!-- fin form login -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+                </div>
+            </div>
+            <!-- fin modal form usuarios -->
+
+        </div>
+
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/parallax.js"></script>
+        <script src="js/smooth-scroll.min.js"></script>
+        <script src="js/granim.min.js"></script>
+        <script src="js/jquery.mask.min.js"></script>
+        <script src="js/sweetalert2.all.min.js"></script>
+        <script src="js/scripts.js"></script>
+        <script src="modulos/administracion.js"></script>
+
+        <script>
+            $(window).on("load", function() {
+                $(".page-loader").fadeOut(1000);
+                $(".page-loader").remove();
+            })
+        </script>
+
+</body>
+
+</html>

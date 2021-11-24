@@ -1,0 +1,6 @@
+liquidacion fecha inicio / fecha fin (correlativas de forma automatica?)
+selecciona fecha de cierre y la fecha de inicio toma el dia siguiente a la ultima liquidacion ??? (evita superposicion)
+
+
+
+identificador del debito -->> dni del donador ??
