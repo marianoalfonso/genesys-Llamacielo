@@ -1,0 +1,15 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerCantidadRegistros`(`IDliquidacion` BIGINT) RETURNS varchar(11) CHARSET utf8mb4
+BEGIN
+DECLARE registros int;
+declare registrosString char(7);
+SELECT
+count(*) into registros
+from liquidaciones
+where liquidacion_id = 1;
+
+set registrosString = lpad(registros,7,"0");
+RETURN registrosString;
+
+END$$
+DELIMITER ;

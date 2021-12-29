@@ -1,0 +1,15 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerImporteTotal`(`IDliquidacion` BIGINT) RETURNS char(15) CHARSET utf8mb4
+BEGIN
+  DECLARE totalImporteLiquidacion DECIMAL(20,2);
+  DECLARE totalImporteLiquidacionString CHAR(16);
+  SET totalImporteLiquidacion = (SELECT sum(liquidacion_donador_importe) FROM liquidaciones WHERE liquidacion_id = IDliquidacion);
+  set totalImporteLiquidacionString = lpad(totalImporteLiquidacion,16,"0");
+  RETURN
+concat(
+    left(totalImporteLiquidacionString,length(totalImporteLiquidacionString)-3),
+    right(totalImporteLiquidacionString,2)
+             );
+  
+END$$
+DELIMITER ;

@@ -1,0 +1,17 @@
+SELECT
+concat(
+	"0",
+	"DEBLIQC",
+    " ",
+    "0056944309",
+    "900000",
+    lpad(" ",4," "),
+    curdate()+1-1,
+    date_format(now( ), "%H%i" ),
+    "0",
+    "  ",
+    lpad(" ",55," "),
+    "*"      
+)
+FROM `liquidaciones`
+where liquidacion_id = 1

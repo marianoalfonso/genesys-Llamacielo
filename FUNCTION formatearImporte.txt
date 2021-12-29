@@ -1,0 +1,12 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `formatearImporte`(`importeDonador` DECIMAL(15,2)) RETURNS char(16) CHARSET utf8mb4
+BEGIN
+  DECLARE totalImporteLiquidacionString CHAR(16);
+  set totalImporteLiquidacionString = lpad(importeDonador,16,"0");
+  RETURN
+  concat(    left(totalImporteLiquidacionString,length(totalImporteLiquidacionString)-3),
+    right(totalImporteLiquidacionString,2)
+             );
+  
+END$$
+DELIMITER ;
