@@ -1,0 +1,47 @@
+insert into presentaciones
+SELECT
+    1,
+concat(
+	"0",
+	"DEBLIQC",
+    " ",
+    "0056944309",
+    "900000",
+    lpad(" ",4," "),
+    curdate()+1-1,
+    date_format(now( ), "%H%i" ),
+    "0",
+    "  ",
+    lpad(" ",55," "),
+    "*"      
+) as header,
+concat(
+	"1",
+    liquidacion_donador_tarjetanumero,
+    lpad(" ",3," "),
+    "00000001",
+    curdate()+1-1,
+    "0005",
+    formatearImporte(liquidacion_donador_importe),
+    "000000032121980",
+    "E",
+    lpad(" ",2," "),
+    lpad(" ",26," "),
+    "*"
+) as detalle,
+concat(
+	"9",
+    "DEBLIQC",
+    " ",
+    "0056944309",
+    "900000",
+    lpad(" ",4," "),
+    curdate()+1-1,
+    DATE_FORMAT(NOW( ), "%H%i" ),
+    obtenerCantidadRegistros(1),
+    obtenerImporteTotal(1),
+    lpad(" ",36," "),
+    "*"
+) as footer
+FROM `liquidaciones`
+where liquidacion_id = 1

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 25-10-2021 a las 12:23:09
--- Versión del servidor: 5.7.21
--- Versión de PHP: 7.2.4
+-- Tiempo de generación: 01-01-2022 a las 18:19:17
+-- Versión del servidor: 8.0.21
+-- Versión de PHP: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -22,6 +21,182 @@ SET time_zone = "+00:00";
 -- Base de datos: `llamacielo`
 --
 
+DELIMITER $$
+--
+-- Procedimientos
+--
+DROP PROCEDURE IF EXISTS `eliminarLiquidacion`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarLiquidacion` (IN `IDliquidacion` INT)  BEGIN
+    DECLARE liquidacionPresentada INT;
+
+	SET liquidacionPresentada = (select count(*) from presentaciones where presentacion_id = IDliquidacion);
+
+	if liquidacionPresentada = 0 then
+		delete from liquidaciones where liquidacion_id = IDliquidacion;
+   end if;
+END$$
+
+DROP PROCEDURE IF EXISTS `eliminarPresentacion`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarPresentacion` (IN `IDliquidacion` INT)  BEGIN
+
+	delete from presentaciones where presentacion_id = IDliquidacion;
+	update liquidaciones set liquidacion_presentada = 0 where liquidacion_id = IDliquidacion;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `generarLiquidacion`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `generarLiquidacion` (IN `IDtarjeta` TINYINT)  BEGIN
+    DECLARE proximaLiquidacion INT;
+    DECLARE proximaFechaInicio DATE;
+    set proximaLiquidacion = obtenerProximaLiquidacion();
+    set proximaFechaInicio = obtenerProximaFechaInicioLiquidacion(IDtarjeta);
+
+    INSERT INTO liquidaciones
+    select
+      proximaLiquidacion,
+  	  donador_id,
+      donador_dni,
+      donador_ong, 
+      case
+        when donador_inicio between proximaFechaInicio and curdate()
+        then 1
+        else 0
+      end as donador_nuevo,
+      proximaFechaInicio,
+      curdate(),
+      donador_tarjetatipo,
+      donador_tarjetanumero,
+      donador_tarjetavencimiento,
+      donador_importe,
+      donador_usuario,
+      0,
+      0
+    from 
+    	donadores
+    where
+      donador_tarjetaTipo = IDtarjeta and
+    	donador_activo = 1;
+END$$
+
+DROP PROCEDURE IF EXISTS `generarPresentacion`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `generarPresentacion` (IN `IDliquidacion` BIGINT)  BEGIN
+
+declare existe int;
+set existe = (select count(*) from presentaciones where presentacion_id = IDliquidacion);
+insert into presentaciones
+SELECT
+    IDliquidacion,
+	concat
+    (
+	"0",
+	"DEBLIQC",
+    " ",
+    "0056944309",
+    "900000",
+    lpad(" ",4," "),
+    curdate()+1-1,
+    date_format(now( ), "%H%i" ),
+    "0",
+    "  ",
+    lpad(" ",55," "),
+    "*"      
+	) as header,
+	concat
+    (
+	"1",
+    liquidacion_donador_tarjetanumero,
+    lpad(" ",3," "),
+    "00000001",
+    curdate()+1-1,
+    "0005",
+    formatearImporte(liquidacion_donador_importe),
+    "000000032121980",
+    "E",
+    lpad(" ",2," "),
+    lpad(" ",26," "),
+    "*"
+	) as detalle,
+	concat
+    (
+	"9",
+    "DEBLIQC",
+    " ",
+    "0056944309",
+    "900000",
+    lpad(" ",4," "),
+    curdate()+1-1,
+    DATE_FORMAT(NOW( ), "%H%i" ),
+    obtenerCantidadRegistros(IDliquidacion),
+    obtenerImporteTotal(IDliquidacion),
+    lpad(" ",36," "),
+    "*"
+	) as footer
+FROM `liquidaciones`
+where liquidacion_id = IDliquidacion;
+
+update liquidaciones 
+set liquidacion_presentada = 1
+where liquidacion_id = IDliquidacion;
+END$$
+
+--
+-- Funciones
+--
+DROP FUNCTION IF EXISTS `formatearImporte`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `formatearImporte` (`importeDonador` DECIMAL(15,2)) RETURNS CHAR(16) CHARSET utf8mb4 BEGIN
+  DECLARE totalImporteLiquidacionString CHAR(16);
+  set totalImporteLiquidacionString = lpad(importeDonador,16,"0");
+  RETURN
+  concat(    left(totalImporteLiquidacionString,length(totalImporteLiquidacionString)-3),
+    right(totalImporteLiquidacionString,2)
+             );
+  
+END$$
+
+DROP FUNCTION IF EXISTS `obtenerCantidadRegistros`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerCantidadRegistros` (`IDliquidacion` BIGINT) RETURNS VARCHAR(11) CHARSET utf8mb4 BEGIN
+DECLARE registros int;
+declare registrosString char(7);
+SELECT
+count(*) into registros
+from liquidaciones
+where liquidacion_id = 1;
+
+set registrosString = lpad(registros,7,"0");
+RETURN registrosString;
+
+END$$
+
+DROP FUNCTION IF EXISTS `obtenerImporteTotal`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerImporteTotal` (`IDliquidacion` BIGINT) RETURNS CHAR(15) CHARSET utf8mb4 BEGIN
+  DECLARE totalImporteLiquidacion DECIMAL(20,2);
+  DECLARE totalImporteLiquidacionString CHAR(16);
+  SET totalImporteLiquidacion = (SELECT sum(liquidacion_donador_importe) FROM liquidaciones WHERE liquidacion_id = IDliquidacion);
+  set totalImporteLiquidacionString = lpad(totalImporteLiquidacion,16,"0");
+  RETURN
+concat(
+    left(totalImporteLiquidacionString,length(totalImporteLiquidacionString)-3),
+    right(totalImporteLiquidacionString,2)
+             );
+  
+END$$
+
+DROP FUNCTION IF EXISTS `obtenerProximaFechaInicioLiquidacion`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerProximaFechaInicioLiquidacion` (`IDtarjeta` TINYINT) RETURNS DATE BEGIN
+  DECLARE proximaFechaInicioLiquidacion date;
+  SET proximaFechaInicioLiquidacion = (SELECT DATE_ADD(max(liquidacion_fechaHasta), INTERVAL 1 day) FROM liquidaciones WHERE liquidacion_donador_tarjetaTipo = IDtarjeta);
+  RETURN proximaFechaInicioLiquidacion;
+END$$
+
+DROP FUNCTION IF EXISTS `obtenerProximaLiquidacion`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerProximaLiquidacion` () RETURNS INT BEGIN
+  DECLARE proximaLiquidacion int;
+  SET proximaLiquidacion = (SELECT MAX(liquidacion_id)+1 FROM liquidaciones);
+  RETURN proximaLiquidacion;
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -30,8 +205,8 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `codigospostales`;
 CREATE TABLE IF NOT EXISTS `codigospostales` (
-  `id` int(19) NOT NULL AUTO_INCREMENT,
-  `codigo_postal` int(4) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `codigo_postal` int NOT NULL,
   `provincia` varchar(19) NOT NULL,
   `localidad` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
@@ -23086,31 +23261,31 @@ INSERT INTO `codigospostales` (`id`, `codigo_postal`, `provincia`, `localidad`) 
 
 DROP TABLE IF EXISTS `donadores`;
 CREATE TABLE IF NOT EXISTS `donadores` (
-  `donador_id` int(11) NOT NULL AUTO_INCREMENT,
-  `donador_ong` tinyint(4) NOT NULL,
-  `donador_dni` int(11) NOT NULL,
+  `donador_id` int NOT NULL AUTO_INCREMENT,
+  `donador_ong` tinyint NOT NULL,
+  `donador_dni` int NOT NULL,
   `donador_nombre` varchar(100) NOT NULL,
   `donador_telefono1` varchar(20) NOT NULL,
   `donador_telefono2` varchar(20) NOT NULL,
   `donador_email` varchar(40) NOT NULL,
-  `donador_codigoPostal` int(4) NOT NULL,
+  `donador_codigoPostal` int NOT NULL,
   `donador_provincia` varchar(25) NOT NULL,
   `donador_localidad` varchar(40) NOT NULL,
   `donador_direccion` varchar(120) NOT NULL,
-  `donador_tarjetaTipo` tinyint(4) NOT NULL,
+  `donador_tarjetaTipo` tinyint NOT NULL,
   `donador_tarjetaNumero` varchar(16) NOT NULL,
   `donador_tarjetaVencimiento` varchar(5) NOT NULL,
   `donador_importe` decimal(20,2) NOT NULL,
   `donador_observaciones` varchar(300) NOT NULL,
   `donador_activo` tinyint(1) NOT NULL,
-  `donador_usuario` tinyint(4) NOT NULL,
+  `donador_usuario` tinyint NOT NULL,
   `donador_inicio` date NOT NULL,
   PRIMARY KEY (`donador_id`,`donador_ong`),
   UNIQUE KEY `dni` (`donador_dni`),
   KEY `FK_donador_tarjetaId` (`donador_tarjetaTipo`),
   KEY `FK_donador_usuario` (`donador_usuario`),
   KEY `FK_donador_ong` (`donador_ong`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `donadores`
@@ -23132,16 +23307,57 @@ INSERT INTO `donadores` (`donador_id`, `donador_ong`, `donador_dni`, `donador_no
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `liquidaciones`
+--
+
+DROP TABLE IF EXISTS `liquidaciones`;
+CREATE TABLE IF NOT EXISTS `liquidaciones` (
+  `liquidacion_id` bigint NOT NULL,
+  `liquidacion_donador_id` int DEFAULT NULL,
+  `liquidacion_donador_dni` int DEFAULT NULL,
+  `liquidacion_donador_ong` tinyint DEFAULT NULL,
+  `liquidacion_donador_nuevo` tinyint DEFAULT NULL,
+  `liquidacion_fechaDesde` date DEFAULT NULL,
+  `liquidacion_fechaHasta` date DEFAULT NULL,
+  `liquidacion_donador_tarjetaTipo` tinyint DEFAULT NULL,
+  `liquidacion_donador_tarjetaNumero` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `liquidacion_donador_tarjetaVencimiento` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `liquidacion_donador_importe` decimal(20,2) DEFAULT NULL,
+  `liquidacion_donador_usuario` tinyint DEFAULT NULL,
+  `liquidacion_presentada` bit(1) NOT NULL DEFAULT b'0',
+  `liquidacion_procesada` bit(1) NOT NULL DEFAULT b'0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `liquidaciones`
+--
+
+INSERT INTO `liquidaciones` (`liquidacion_id`, `liquidacion_donador_id`, `liquidacion_donador_dni`, `liquidacion_donador_ong`, `liquidacion_donador_nuevo`, `liquidacion_fechaDesde`, `liquidacion_fechaHasta`, `liquidacion_donador_tarjetaTipo`, `liquidacion_donador_tarjetaNumero`, `liquidacion_donador_tarjetaVencimiento`, `liquidacion_donador_importe`, `liquidacion_donador_usuario`, `liquidacion_presentada`, `liquidacion_procesada`) VALUES
+(0, NULL, NULL, NULL, NULL, '2021-09-01', '2021-09-01', 1, NULL, NULL, NULL, NULL, b'0', b'0'),
+(0, NULL, NULL, NULL, NULL, '2021-09-01', '2021-09-01', 2, NULL, NULL, NULL, NULL, b'0', b'0'),
+(1, 82, 12121212, 1, 1, '2021-09-02', '2022-01-01', 1, '4521551515155151', '05/28', '1500.00', 1, b'1', b'0'),
+(1, 81, 88888888, 1, 1, '2021-09-02', '2022-01-01', 1, '4515155151515151', '12/27', '450.00', 1, b'1', b'0'),
+(1, 80, 66666666, 1, 1, '2021-09-02', '2022-01-01', 1, '4552141515151515', '05/25', '1500.00', 1, b'1', b'0'),
+(1, 78, 99999999, 1, 1, '2021-09-02', '2022-01-01', 1, '4548151541515151', '06/26', '1500.00', 1, b'1', b'0'),
+(1, 77, 25595111, 1, 1, '2021-09-02', '2022-01-01', 1, '4589155515111551', '05/28', '500.00', 1, b'1', b'0'),
+(1, 76, 55555555, 1, 1, '2021-09-02', '2022-01-01', 1, '4581815151551515', '05/29', '700.00', 1, b'1', b'0'),
+(1, 75, 22222222, 1, 1, '2021-09-02', '2022-01-01', 1, '4548181818181181', '05/29', '5000.00', 1, b'1', b'0'),
+(1, 73, 33333333, 1, 1, '2021-09-02', '2022-01-01', 1, '4587181818188188', '05/26', '800.00', 1, b'1', b'0'),
+(1, 71, 25595204, 1, 1, '2021-09-02', '2022-01-01', 1, '4548151515151515', '05/24', '1500.00', 1, b'1', b'0');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ongs`
 --
 
 DROP TABLE IF EXISTS `ongs`;
 CREATE TABLE IF NOT EXISTS `ongs` (
-  `ong_id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `ong_id` tinyint NOT NULL AUTO_INCREMENT,
   `ong_nombre` varchar(150) NOT NULL,
   `ong_activa` tinyint(1) NOT NULL,
   PRIMARY KEY (`ong_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `ongs`
@@ -23153,16 +23369,45 @@ INSERT INTO `ongs` (`ong_id`, `ong_nombre`, `ong_activa`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `presentaciones`
+--
+
+DROP TABLE IF EXISTS `presentaciones`;
+CREATE TABLE IF NOT EXISTS `presentaciones` (
+  `presentacion_id` bigint NOT NULL,
+  `presentacion_header` varchar(100) NOT NULL,
+  `presentacion_detalle` varchar(100) NOT NULL,
+  `presentacion_footer` varchar(100) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `presentaciones`
+--
+
+INSERT INTO `presentaciones` (`presentacion_id`, `presentacion_header`, `presentacion_detalle`, `presentacion_footer`) VALUES
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14548151515151515   00000001202201010005000000000150000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14587181818188188   00000001202201010005000000000080000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14548181818181181   00000001202201010005000000000500000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14581815151551515   00000001202201010005000000000070000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14589155515111551   00000001202201010005000000000050000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14548151541515151   00000001202201010005000000000150000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14552141515151515   00000001202201010005000000000150000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14515155151515151   00000001202201010005000000000045000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *'),
+(1, '0DEBLIQC 0056944309900000    2022010115090                                                         *', '14521551515155151   00000001202201010005000000000150000000000032121980E                            *', '9DEBLIQC 0056944309900000    2022010115090000009000000001345000                                    *');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tarjetas`
 --
 
 DROP TABLE IF EXISTS `tarjetas`;
 CREATE TABLE IF NOT EXISTS `tarjetas` (
-  `tarjeta_id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `tarjeta_id` tinyint NOT NULL AUTO_INCREMENT,
   `tarjeta_descripcion` varchar(30) NOT NULL,
   `tarjeta_enabled` tinyint(1) NOT NULL,
   PRIMARY KEY (`tarjeta_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `tarjetas`
@@ -23185,17 +23430,17 @@ INSERT INTO `tarjetas` (`tarjeta_id`, `tarjeta_descripcion`, `tarjeta_enabled`) 
 
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE IF NOT EXISTS `usuarios` (
-  `usuario_id` tinyint(4) NOT NULL AUTO_INCREMENT,
-  `usuario_tipo` tinyint(4) NOT NULL,
+  `usuario_id` tinyint NOT NULL AUTO_INCREMENT,
+  `usuario_tipo` tinyint NOT NULL,
   `usuario_nombre` varchar(70) NOT NULL,
-  `usuario_dni` int(11) NOT NULL,
+  `usuario_dni` int NOT NULL,
   `usuario_password` varchar(20) NOT NULL,
   `usuario_fechaInicio` date NOT NULL,
   `usuario_activo` tinyint(1) NOT NULL,
   `usuario_email` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`usuario_id`),
   KEY `FK_usuario_tipo` (`usuario_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
@@ -23217,10 +23462,10 @@ INSERT INTO `usuarios` (`usuario_id`, `usuario_tipo`, `usuario_nombre`, `usuario
 
 DROP TABLE IF EXISTS `usuario_tipo`;
 CREATE TABLE IF NOT EXISTS `usuario_tipo` (
-  `tipo_id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `tipo_id` tinyint NOT NULL AUTO_INCREMENT,
   `tipo_descripcion` varchar(30) NOT NULL,
   PRIMARY KEY (`tipo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `usuario_tipo`
