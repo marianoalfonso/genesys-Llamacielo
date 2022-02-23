@@ -299,14 +299,17 @@ h6,
 
 @media all and (max-width: 767px) {
     h1,
-    .h1 {
-        font-size: 2.35714286em;
+    .h1.titulo {
+        font-size: 2.35714286em !important;
         line-height: 1.36363636em;
     }
+    .mt--1 {
+        margin-top: 0 !important;
+    }
     h2,
-    .h2 {
-        font-size: 1.78571429em;
-        line-height: 1.5em;
+    .h2.titulo {
+        font-size: 1.78571429em !important;
+        line-height: 1.5em !important;
     }
     h3,
     .h3 {
@@ -2770,7 +2773,7 @@ section.slider .flickity-page-dots {
 }
 
 .modal-container .modal-content .modal-close-cross {
-    cursor: pointer;
+    /* cursor: pointer;
     position: absolute;
     opacity: .5;
     transition: 0.1s linear;
@@ -2778,7 +2781,37 @@ section.slider .flickity-page-dots {
     -moz-transition: 0.1s linear;
     top: 1em;
     right: 1em;
-    z-index: 99;
+    z-index: 99;*/
+    height: 30px;
+    cursor: pointer;
+    width: 30px;
+    left: auto;
+    right: 10px;
+    bottom: auto;
+    top: 10px;
+    padding: 0px;
+    color: #ffffff;
+    /* font-family: inherit; */
+    font-size: 10px;
+    line-height: 26px;
+    border: 2px solid #fff;
+    border-radius: 30px;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+    text-shadow: 0px 0px 0px rgb(0 0 0 / 13%);
+    background-color: red;
+    z-index: 9999;
+    position: absolute;
+    text-shadow: 1px 0.45px rgb(0 0 0 / 5%);
+    text-align: center;
+    transition: 0.1s linear;
+    -webkit-transition: 0.1s linear;
+    -moz-transition: 0.1s linear;
+}
+
+.modal-container .modal-content .modal-close-cross:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 5%) 0px 3px 6px;
+    text-shadow: 0px 0px 0px rgb(0 0 0 / 0%);
 }
 
 .modal-container .modal-content .modal-close-cross:before {
@@ -2793,6 +2826,58 @@ section.slider .flickity-page-dots {
 .modal-container .modal-content.imagebg:not(.image--light) .modal-close-cross:before {
     color: #fff;
 }
+
+
+/* boton para regresar un modal atras */
+
+.modal-container .modal-content .modal-return {
+    height: 30px;
+    cursor: pointer;
+    width: 30px;
+    left: auto;
+    right: 10px;
+    bottom: auto;
+    top: 10px;
+    padding: 0px;
+    color: #ffffff;
+    /* font-family: inherit; */
+    font-size: 10px;
+    line-height: 22px;
+    border: 2px solid #fff;
+    border-radius: 30px;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+    text-shadow: 0px 0px 0px rgb(0 0 0 / 13%);
+    background-color: rgb(33 150 243);
+    z-index: 9999;
+    position: absolute;
+    text-shadow: 1px 0.45px rgb(0 0 0 / 5%);
+    text-align: center;
+    transition: 0.1s linear;
+    -webkit-transition: 0.1s linear;
+    -moz-transition: 0.1s linear;
+}
+
+.modal-container .modal-content .modal-return:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 5%) 0px 3px 6px;
+    text-shadow: 0px 0px 0px rgb(0 0 0 / 0%);
+}
+
+.modal-container .modal-content .modal-return:before {
+    content: '\00ab';
+    font-size: 1.5em;
+}
+
+.modal-container .modal-content .modal-return:hover {
+    opacity: 1;
+}
+
+.modal-container .modal-content.imagebg:not(.image--light) .modal-return:before {
+    color: #fff;
+}
+
+
+/* fin boton regresar un modal atras*/
 
 .modal-container .modal-content iframe {
     width: 100%;
@@ -5941,7 +6026,7 @@ section.parallax .row .background-image-holder {
 }
 
 .bar .logo {
-    max-height: 1.6em;
+    max-height: 4em;
     max-width: none;
 }
 
@@ -11901,10 +11986,38 @@ input.dt-button:hover:not(.disabled) {
     display: none;
 }
 
+#tablaUsuarios td:nth-child(1) {
+    display: none;
+}
+
+#tablaUsuarios th:nth-child(1) {
+    display: none;
+}
+
 img[src*="https://cdn.rawgit.com/000webhost/log"] {
     display: none;
 }
 
 img[src*="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"] {
     display: none;
+}
+
+.m--20 {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.mb--20 {
+    margin-bottom: 20px;
+}
+
+
+/* elimina los botones de exportar la tabla del datatable */
+
+#tablaPresentacionesTarjeta_wrapper div.dt-buttons {
+    display: none;
+}
+
+.swal2-cancel {
+    cancelButton: 'CANCELAR',
 }

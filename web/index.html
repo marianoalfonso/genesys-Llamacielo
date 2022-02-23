@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/socicon.css" rel="stylesheet" type="text/css" media="all" />
 
+
     <link href="css/iconsmind.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/icofont/icofont.min.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/flickity.css" rel="stylesheet" type="text/css" media="all" />
@@ -15,6 +16,34 @@
     <link href="css/stack-interface.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,400i,500,600,700" rel="stylesheet">
+
+    <style>
+        fieldset.scheduler-border {
+            border: 1px solid #f3eeee !important;
+            padding: 1em 2em 2em 2em !important;
+            margin: 0 0 1.5em 0 !important;
+            -webkit-box-shadow: 0px 0px 0px 0px #000;
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+        
+        legend {
+            margin-bottom: 0 !important;
+        }
+        
+        legend.scheduler-border {
+            font-size: 1.2em !important;
+            font-weight: bold !important;
+            text-align: center !important;
+            width: auto;
+            padding: 0 5px 0 5px;
+            border-bottom: none;
+        }
+        
+        form {
+            max-width: 93%;
+            margin: 0 auto;
+        }
+    </style>
 
 </head>
 
@@ -79,7 +108,7 @@
         </div>
     </div>
     <div class="main-container">
-        <section class="cover height-100 imagebg parallax text-left" data-gradient-bg="#1A2980,#02AAB0,#5f2c82,#26D0CE"><canvas id="granim-2" width="0" height="0"></canvas>
+        <section class="cover height-100 imagebg parallax text-left" data-overlay="6">
             <div class="background-image-holder">
                 <img alt="background" src="img/bg-hero.jpg" />
             </div>
@@ -180,53 +209,7 @@
 
         </section>-->
 
-        <!-- OPINIONES -->
-        <section class="bg--secondary">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="slider slider--inline-arrows" data-arrows="true" data-children="3">
-                            <ul class="slides flickity-enabled is-draggable" tabindex="0">
-                                <div class="flickity-viewport">
-                                    <div class="flickity-slider" style="left: 0px; transform: translateX(-200%);">
-                                        <li class="slide" style="position: absolute; left: 0%;">
-                                            <div class="testimonial row justify-content-center">
-                                                <div class="col-lg-2 col-md-4 col-6 text-center">
-                                                    <img class="testimonial__image shadowed2 mt-20" alt="" src="img/avatar-round-1.png">
-                                                </div>
-                                                <div class="col-lg-7 col-md-8 col-12 text-center-xs">
-                                                    <span class="h3">“Gracias Llama Cielo por darnos el acompañamiento en este viaje de la solidaridad. Un trato especial de ustedes en todo momento.”
-                                            </span>
-                                                    <h5>Analía Holland</h5>
-                                                    <spa>Presidenta — Fundación Ayudarlos</span>
-                                                </div>
-                                            </div>
-                                        </li>
 
-                                        <li class="slide is-selected" style="position: absolute; left: 200%;">
-                                            <div class="testimonial row justify-content-center">
-                                                <div class="col-lg-2 col-md-4 col-6 text-center">
-                                                    <img class="testimonial__image shadowed2 mt-20" alt="" src="img/avatar-round-3.png">
-                                                </div>
-                                                <div class="col-lg-7 col-md-8 col-12 text-center-xs">
-                                                    <span class="h3">“¡Agradezco a Llama Cielo! a través de ellos, nuestra fundacion Ayudamos creció de manera imaginable en poco tiempo. ¡Muchas gracias a todo el equipo!.”
-                                            </span>
-                                                    <h5>Juan Vasquez</h5>
-                                                    <span>Presidente — Fundación Ayudamos</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </div>
-                                </div><button class="flickity-prev-next-button previous" type="button" aria-label="previous"><svg viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path></svg></button>
-                                <button class="flickity-prev-next-button next" type="button" aria-label="next"><svg viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg></button>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!--end of row-->
-            </div>
-            <!--end of container-->
-        </section>
 
         <!-- CTA -->
         <section class="cover height-70 imagebg text-center parallax" data-gradient-bg="#1A2980,#02AAB0,#5f2c82,#26D0CE"><canvas id="granim-2" width="0" height="0"></canvas>
@@ -257,6 +240,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="heading-block">
+
                         <ul class="list-inline list--hover">
                             <li>
                                 <a href="quienessomos.html">
@@ -304,7 +288,7 @@
     </footer>
 
     <!-- modal form login -->
-    <div class="modal-container" data-modal-index="0">
+    <div id="modalLogin" class="modal-container modal--prevent-close" data-modal-index="0">
         <div class="modal-content section-modal">
             <section class="unpad ">
                 <div class="container">
@@ -315,24 +299,27 @@
                                 <!-- <h3>Loguéese para ingresar</h3> -->
                                 <div class="feature__body">
                                     <!-- form login-->
-                                    <form id="form-login" autocomplete="off">
-                                        <div class="row">
+                                    <fieldset class="scheduler-border">
+                                        <legend id="legend" class="scheduler-border">Ingresar</legend>
+                                        <form id="form-login" autocomplete="off">
+                                            <div class="row">
 
-                                            <div class="col-md-12">
-                                                <input type="number" name="dni" placeholder="Dni" data-mask="00000000">
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="inner-addon right-addon">
-                                                    <input id="password" type="password" name="pass" placeholder="Password" autocomplete="off">
-                                                    <i id="togglePassword" class="icofont-eye-blocked"></i>
+                                                <div class="col-md-12">
+                                                    <input type="number" name="dni" placeholder="Dni" data-mask="00000000">
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <button class="btn btn--primary type--uppercase" type="submit">Ingresar</button>
-                                            </div>
+                                                <div class="col-md-12">
+                                                    <div class="inner-addon right-addon">
+                                                        <input id="password" type="password" name="pass" placeholder="Password" autocomplete="off">
+                                                        <i id="togglePassword" class="icofont-eye-blocked"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <button id="btnIngresar" class="btn btn--primary type--uppercase" type="submit">Ingresar</button>
+                                                </div>
 
-                                        </div>
-                                    </form>
+                                            </div>
+                                        </form>
+                                    </fieldset>
                                     <!-- fin form login -->
 
                                     <div id="mensaje" class="hidden mt--1 mb--1"></div>

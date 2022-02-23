@@ -1812,11 +1812,11 @@ mr = (function(mr, $, window, document) {
 
         jQuery(document).on('click', '.modal-close', mr.modals.closeActiveModal);
 
-        jQuery(document).keyup(function(e) {
-            if (e.keyCode === 27) { // escape key maps to keycode `27`
-                mr.modals.closeActiveModal();
-            }
-        });
+        /* jQuery(document).keyup(function(e) {
+             if (e.keyCode === 27) { // escape key maps to keycode `27`
+                 mr.modals.closeActiveModal();
+             }
+         });*/
 
         $('.modal-container:not(.modal--prevent-close)').on('click', function(e) {
             if (e.target !== this) return;
@@ -1887,7 +1887,14 @@ mr = (function(mr, $, window, document) {
         });
 
         // Make modal scrollable
-        jQuery(document).on('wheel mousewheel scroll', '.modal-content, .modal-content .scrollable', function(evt) {
+        /*jQuery(document).on('wheel mousewheel scroll', '.modal-content, .modal-content .scrollable', function(evt) {
+            if (evt.preventDefault) { evt.preventDefault(); }
+            if (evt.stopPropagation) { evt.stopPropagation(); }
+            this.scrollTop += (evt.originalEvent.deltaY);
+        });*/
+
+        // agregando solo scrollable funciona bien modal presentaciones con diferentes tarjetas
+        jQuery(document).on('wheel mousewheel scroll', '.scrollable', function(evt) {
             if (evt.preventDefault) { evt.preventDefault(); }
             if (evt.stopPropagation) { evt.stopPropagation(); }
             this.scrollTop += (evt.originalEvent.deltaY);
@@ -1944,6 +1951,8 @@ mr = (function(mr, $, window, document) {
 
     mr.components.documentReady.push(mr.modals.documentReady);
     return mr;
+
+
 
 }(mr, jQuery, window, document));
 
