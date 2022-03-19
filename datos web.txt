@@ -8,3 +8,9 @@ admin
 
 telemarketer 
 25595203
+
+nombre: Laura Genlote
+perfil: administrador
+
+usr: 55555556
+pwd: laura2022
