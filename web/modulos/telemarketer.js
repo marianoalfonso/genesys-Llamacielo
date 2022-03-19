@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    traerDatosOngs(); // trae los datos de las ONGS para cargar en el select ONG
+
     const $menuUsuario = document.getElementById('menuUsuario'); // menu del usuario logueado
     const $usuarioLogueado = document.getElementById('usuarioNombre') // para mostrar que usuario esta logueado
     const $usuarioRol = document.getElementById('usuarioRol'); // rol del usuario
@@ -84,6 +87,41 @@ document.addEventListener('DOMContentLoaded', () => {
         phoneRegionCode: 'AR'
     });
 
+    // traer datos de las Ongs
+    async function traerDatosOngs() {
+        try {
+            const datosOngs = await fetch('modulos/consultaOngDB.php', {
+                method: 'GET'
+            })
+
+            const infoOng = await datosOngs.json();
+            console.log('datos de las ong cargadas')
+            console.log(infoOng);
+
+            // IMPORTANTE: si no traigo filtrado las ONGS activas TENGO QUE DESHABILITAR ESTE FILTRO
+
+            // filtro para obtener solo las Ongs activas para cargarlas en el select
+            let ongActivas = infoOng.filter(dato => {
+                return dato.ong_activa == '1'
+            })
+
+            console.log('datos de las ong cargadas filtradas por ONG ACTIVAS');
+            console.log(ongActivas);
+
+
+            // Cargo dinamicamnete el select con las ONGS activas devueltas por fetch
+            ongActivas.forEach(function(elemento) {
+                let option = document.createElement('option');
+                option.value = `${elemento.ong_id}`;
+                option.text = `${elemento.ong_nombre}`;
+                $formOng.appendChild(option);
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     // cargo los datos de localStorage para utilizarlos en el formulario y html
     let dataUser = localStorage.getItem('datosUser');
     dataUser = JSON.parse(dataUser);
@@ -113,17 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
             })
 
             const datos = await datosTelemarketer.json();
-            // borro datos de usuarios
-            for (i = 0; i < datos.length; i++) {
-                delete datos[i].usuario_activo;
-                delete datos[i].usuario_dni;
-                delete datos[i].usuario_email;
-                delete datos[i].usuario_fechaInicio;
-                delete datos[i].usuario_id;
-                delete datos[i].usuario_password;
-                delete datos[i].usuario_tipo;
-            }
-            //console.log(datos)
+            console.log(datos)
+                // borro datos de usuarios
+                /*  for (i = 0; i < datos.length; i++) {
+                      delete datos[i].usuario_activo;
+                      delete datos[i].usuario_dni;
+                      delete datos[i].usuario_email;
+                      delete datos[i].usuario_fechaInicio;
+                      delete datos[i].usuario_id;
+                      delete datos[i].usuario_password;
+                      delete datos[i].usuario_tipo;
+                  }*/
+                // console.log(datos)
 
             // filtrar datos por usuario telemarketer
             // usuarios inactivos

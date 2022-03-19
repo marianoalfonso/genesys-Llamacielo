@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     traerDatosUsuarios(); // llamo a la base y traigo los usuarios cargados
+    traerDatosOngs(); // llamo a la base y traigo los datos de las ongs
 
     const $menuUsuario = document.getElementById('menuUsuario'); // menu de usuario logueado
     const $usuarioLogueado = document.getElementById('usuarioNombre') // muestra usuario logueado
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const togglePassword = document.getElementById('togglePassword');
 
     // modal presentaciones seleccionar tarjeta
+    const $modalOngsActivas = document.getElementById('ongsActivas'); // en esta variable voy a crear dinamicamente el relleno del select de las ONGS activas
     const $modalPresentaciones = document.querySelector('.modalPresentaciones'); // modal que sirve para seleccionar tarjetas y enviar a generar o visualizar presentaciones
     const $btnGenerarPresentaciones = document.getElementById('btnGenerarPresentaciones'); // boton del menu generar presentacion
     const $btnVerPresentaciones = document.getElementById('btnVerPresentaciones'); // boton del menu ver presentaciones
@@ -33,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let dniModificacion = ''; // usado cuando modifico o doy de alta usuario
     let valorTarjetaSeleccionada = ''; // valor de la tarjeta seleccionada para usar en la presentacion y generacion de archivo txt
+    let valorOngSeleccionada = ''; // valor de la ong seleccionada para usar en la presentacion y generacion de archivo txt
+    let nombreOngSeleccionada = '';
     let valorLiquidacionPresentacion = ''; // valor de la liquidacion al seleccionar la tarjeta seleccionada para presentacion y generacion archivo txt
     let nombreArchivoTxtPresentacion = ''; // valor que se asigna al archivo txt a descargar con la presentacion para el banco
     let valorIDliquidacionSeleccionada; // este valor va dentro de la tabla donde se visualizan las liquidaciones
@@ -252,8 +256,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             btnSeleccionadoPresentaciones = "2";
         }
-        // guardo valor que se selecciono de tarjeta
+        // guardo valor que se selecciono de tarjeta y ong
         valorTarjetaSeleccionada = document.getElementById('tarjetaId').value;
+        valorOngSeleccionada = document.getElementById('ongsActivas').value;
+
+        // pasos para guardar el nombre de la ong seleccionada
+        let ongSeleccionada = document.getElementById("ongsActivas");
+        let selected = ongSeleccionada.options[ongSeleccionada.selectedIndex].text;
+        nombreOngSeleccionada = selected;
+
+        //console.log(`ong seleccionada ${}`)
+
 
         // guardo el nombre que le voy a poner al archivo txt
         if (valorTarjetaSeleccionada == 1) {
@@ -286,10 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
             $modalGenerarPresentaciones.classList.add('modal-active');
             document.getElementById('tarjetaId').value = 1; // una vez seleccionada vuelvo a poner como predeterminada la tarjeta 1
             if (btnSeleccionadoPresentaciones === "1") {
-                llamarProcedimientoGenerarPresentacion(valorTarjetaSeleccionada);
+                llamarProcedimientoGenerarPresentacion(valorTarjetaSeleccionada, valorOngSeleccionada);
             } else {
                 $modalGenerarPresentaciones.classList.remove('modal-active');
-                llamarProcedimientoVerPresentaciones(valorTarjetaSeleccionada);
+                llamarProcedimientoVerPresentaciones(valorTarjetaSeleccionada, valorOngSeleccionada);
             }
 
         }, 3000);
@@ -297,12 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // funcion para llamar procedimiento generarPresentacion tarjeta
-    async function llamarProcedimientoGenerarPresentacion(idTarjeta) {
+    async function llamarProcedimientoGenerarPresentacion(idTarjeta, idOng) {
         try {
 
             const formData = new FormData();
-            const json = JSON.stringify(idTarjeta);
-            formData.append('idTarjeta', json);
+            formData.append('idTarjeta', idTarjeta);
+            formData.append('idOng', idOng);
+
+            console.log(...formData.entries());
 
             let datosTarjeta = await fetch('modulos/llamarProcedimientoGenerarPresentacion.php', {
                 method: 'POST',
@@ -329,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 data: datos,
                 columns: [
                     { data: 'ID_liq', title: 'ID_LIQ.' },
+                    { data: 'ong', title: 'ONG' },
                     { data: 'nombre', title: 'NOMBRE' },
                     { data: 'dni', title: 'DNI' },
                     { data: 'tarjeta', title: 'TARJETA' },
@@ -346,12 +362,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // funcion para llamar al procedimiento verPresentaciones
-    async function llamarProcedimientoVerPresentaciones(idTarjeta) {
+    async function llamarProcedimientoVerPresentaciones(idTarjeta, idOng) {
         try {
 
             const formData = new FormData();
-            const json = JSON.stringify(idTarjeta);
-            formData.append('idTarjeta', json);
+            formData.append('idTarjeta', idTarjeta);
+            formData.append('idOng', idOng);
+
+            console.log(...formData.entries());
 
             let datosTarjeta = await fetch('modulos/llamarProcedimientoVerPresentaciones.php', {
                 method: 'POST',
@@ -375,6 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 data: datos,
                 columns: [
                     { data: 'ID_liq', title: 'ID_LIQ.' },
+                    { data: 'ong', title: 'ONG' },
                     { data: 'tarjeta', title: 'TARJETA' },
                     { data: 'desde', title: 'DESDE' },
                     { data: 'hasta', title: 'HASTA' },
@@ -391,8 +410,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ],
 
                 columnDefs: [
-                    { title: 'DETALLE', targets: 4 },
-                    { title: 'PRESENTACION', targets: 5 }
+                    { title: 'DETALLE', targets: 5 },
+                    { title: 'PRESENTACION', targets: 6 }
 
                 ]
             });
@@ -407,7 +426,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // evento que capturo el ID de liquidacion del boton detalle seleccionado para enviar al proceso
     // IMPORTANTE: HAY ERROR EN EL PROCEDIMIENTO SQL: PERMITE MOSTRAR HASTA CIERTA CANTIDAD DE ID_LIQ
     document.getElementById('tablaVisualizarPresentacionesTarjeta').addEventListener('click', (e) => {
-
 
         if (e.target.classList.contains('detalle')) {
             valorIDliquidacionSeleccionada = $(e.target).closest('tr').find('td:first').text();
@@ -471,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // boton para regresar al modal anterior, llama de nuevo al procedimiento verPresentaciones
             // NOTA: tratar de regresar sin llamar al procedimiento de nuevo
             $botonRegresar.addEventListener('click', () => {
-                llamarProcedimientoVerPresentaciones(valorTarjetaSeleccionada);
+                llamarProcedimientoVerPresentaciones(valorTarjetaSeleccionada, valorOngSeleccionada);
                 $modalVisualizarPresentaciones.classList.add('modal-active');
             })
 
@@ -499,7 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('devolucion del procedimiento si ya se genero la presentacion');
             // console.log(datos[0].cantidad);
             if (datos[0].cantidad > 0) {
-                alertVerificacionPresentacionGenerada(valorIDliquidacionSeleccionada, valorTarjetaSeleccionada);
+                alertVerificacionPresentacionGenerada(valorIDliquidacionSeleccionada, valorTarjetaSeleccionada, nombreOngSeleccionada);
             } else {
                 llamarProcedimientoArchivoTxt(idLiquidacion);
             }
@@ -546,6 +564,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // cierra el modal donde se muestra la presentacion seleccionada
         $modalGenerarPresentaciones.classList.remove('modal-active'); // lo agregue recien
         valorTarjetaSeleccionada = '';
+        valorOngSeleccionada = '';
+        nombreOngSeleccionada = '';
     })
 
     // funcion que llamar a la funcion crearTxt
@@ -563,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
 
             let datos = await datosPresentacionTxt.json();
-            console.table(datos);
+            //console.table(datos);
             crearTxt(datos);
 
         } catch (error) {
@@ -772,6 +792,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    // traer datos de las Ongs
+    async function traerDatosOngs() {
+        try {
+            const datosOngs = await fetch('modulos/consultaOngDB.php', {
+                method: 'GET'
+            })
+
+            const infoOng = await datosOngs.json();
+            console.log('datos de las ong cargadas')
+            console.log(infoOng);
+
+            // IMPORTANTE: si no traigo filtrado las ONGS activas TENGO QUE DESHABILITAR ESTE FILTRO
+
+            // filtro para obtener solo las Ongs activas para cargarlas en el select
+            let ongActivas = infoOng.filter(dato => {
+                return dato.ong_activa == '1'
+            })
+
+            console.log('datos de las ong cargadas filtradas por ONG ACTIVAS');
+            console.log(ongActivas);
+
+
+            // Cargo dinamicamnete el select con las ONGS activas devueltas por fetch
+            ongActivas.forEach(function(elemento) {
+                let option = document.createElement('option');
+                option.value = `${elemento.ong_id}`;
+                option.text = `${elemento.ong_nombre}`;
+                $modalOngsActivas.appendChild(option);
+            })
+
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -1144,7 +1199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }*/
 
-    function alertVerificacionPresentacionGenerada(idLiquidacion, valorTarjeta) {
+    function alertVerificacionPresentacionGenerada(idLiquidacion, valorTarjeta, valorOng) {
         if (valorTarjeta == 1) {
             valorTarjeta = 'VISA CREDITO';
         } else if (valorTarjeta == 2) {
@@ -1154,7 +1209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         Swal.fire({
-            title: `Ya se generó una exportación para la liquidacion ${idLiquidacion} de la tarjeta ${valorTarjeta}`,
+            title: `Ya se generó una exportación para la liquidacion ${idLiquidacion} de la tarjeta ${valorTarjeta} de la ONG ${valorOng}`,
             text: "¿Desea eliminarla y volver a generarla?",
             icon: 'warning',
             showCancelButton: true,

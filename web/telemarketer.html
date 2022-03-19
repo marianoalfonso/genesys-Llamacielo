@@ -1,22 +1,26 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" dir="ltr">
 
 <head>
+    <!-- metas -->
     <meta charset="utf-8">
-    <title>Telemarketer - Llamacielo</title>
+    <title>Telemarkeeter - LlamaCielo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- css -->
     <link href="css/socicon.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/icofont/icofont.min.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
-
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/datatables.min.css" />
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/datatables.min.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/stack-interface.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,400i,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,400i,500,600,700" rel="stylesheet" type="text/css" media="all" />
 
+    <!-- direct styles -->
     <style>
         fieldset.scheduler-border {
             border: 1px solid #f3eeee !important;
@@ -33,6 +37,10 @@
             width: auto;
             padding: 0 10px;
             border-bottom: none;
+        }
+        
+        .disclaimer {
+            display: none;
         }
     </style>
 
@@ -51,7 +59,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-3 col-md-2">
-                            <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo.png"> <img class="logo logo-light" alt="logo" src="img/logo.png"> </a>
+                            <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo-dark.png"> <img class="logo logo-light" alt="logo" src="img/logo-dark.png"> </a>
                         </div>
                         <div class="col-9 col-md-10 text-right">
                             <a href="#" class="hamburger-toggle" data-toggle-class="#menu1;hidden-xs hidden-sm"> <i class="icon icon--sm stack-interface stack-menu"></i> </a>
@@ -65,7 +73,7 @@
                     <div class="row">
                         <div class="col-lg-1 col-md-2 hidden-xs">
                             <div class="bar__module">
-                                <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo.png"> <img class="logo logo-light" alt="logo" src="img/logo.png"> </a>
+                                <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo-light.png"> <img class="logo logo-light" alt="logo" src="img/logo-light.png"> </a>
                             </div>
                         </div>
                         <div class="col-lg-11 col-md-12 text-right text-left-xs text-left-sm">
@@ -246,11 +254,24 @@
                                     <div class="input-select">
                                         <select id="formOng" name="donador_ong" title="Debes cargar este campo" required>
                                             <!--<option value="">Seleccione ONG</option>-->
-                                            <option value="1">ong pruebas</option> 
+                                           <!-- <option value="1">ong pruebas</option> -->
                                          </select>
                                     </div>
                                     <!-- <small id="errorOng" class="form-text text-danger text-left hidden">*Debe cargar una ONG.</small> -->
                                 </div>
+
+                                <!-- 
+                                <div class="col-md-6">
+                                    <div class="input-select">
+                                        <select id="formOng" name="donador_ong" title="Debes cargar este campo" required>
+                                           
+                                            <option value="1">ong pruebas</option> 
+                                         </select>
+                                    </div>
+                                   
+                                </div>
+
+                                -->
 
                                 <!-- Donador Importe sugerido -->
                                 <div id="ocultarImporteSugerido" class="col-md-3">
@@ -332,18 +353,60 @@
             </div>
             <!-- fin contenido formulario -->
         </section>
-        <footer class="text-center-xs space--xs bg--dark">
+        <footer class="text-center space--sm footer-5  bg--dark">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12 text-center">
-                        <ul class="social-list list-inline list--hover">
-                            <li><a href="#"><i class="socicon socicon-twitter icon icon--xs"></i></a></li>
-                            <li><a href="#"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
-                            <li><a href="#"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
-                        </ul>
+                    <div class="col-md-12">
+                        <div class="heading-block">
+                            <!-- <ul class="list-inline list--hover">
+                                 <li>
+                                    <a href="index.html">
+                                        <span>Inicio</span>
+                                    </a>
+                                </li>-->
+                            <!-- <li>
+                                    <a href="#">
+                                        <span>Soporte</span>
+                                    </a>
+                                </li>
+
+                            </ul> -->
+                        </div>
+                        <div>
+                            <ul class="social-list list-inline list--hover">
+                                <!-- <li>
+                                    <a href="#">
+                                        <i class="socicon socicon-twitter icon icon--xs"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="socicon socicon-facebook icon icon--xs"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="socicon socicon-instagram icon icon--xs"></i>
+                                    </a>
+                                </li>-->
+                                <li>
+                                    <a href="#">
+                                        <i class="icofont-brand-whatsapp icon--sm"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="type--fine-print">©
+                                <span class="update-year">2021</span> LlamaCielo.</span>
+                            <a class="type--fine-print" href="#">Privacy Policy</a>
+                            <a class="type--fine-print" href="#">Legal</a>
+                        </div>
                     </div>
                 </div>
+                <!--end of row-->
             </div>
+            <!--end of container-->
         </footer>
 
         <!-- modal liquidaciones telemarketer individual -->

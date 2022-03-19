@@ -1,9 +1,11 @@
 <?php
 include('connDB.php'); 
 
-$id_tarjeta = json_decode($_POST['idTarjeta'], true);
+$id_tarjeta = ($_POST['idTarjeta']);
+$id_ong = ($_POST['idOng']);
 
-if(!($conPDO->query("CALL generarPresentacion($id_tarjeta)"))) {
+
+if(!($conPDO->query("CALL generarPresentacion($id_tarjeta,$id_ong)"))) {
   echo json_encode('Error en el llamado al procedimiento "generarPresentacion"');
  } else {
     // llamo al procedimiento "verPresentacionActual"
@@ -17,6 +19,7 @@ if(!($conPDO->query("CALL generarPresentacion($id_tarjeta)"))) {
       $sql = 'CALL verPresentacionGenerada()';
       $stmt=$conPDO->prepare($sql);
       $stmt->bindParam(':ID_liq', $ID_liq, PDO::PARAM_STR);
+      $stmt->bindParam(':ong', $ong, PDO::PARAM_STR);
       $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
       $stmt->bindParam(':dni', $dni, PDO::PARAM_STR);
       $stmt->bindParam(':tarjetaNro', $tarjetaNro, PDO::PARAM_STR);
