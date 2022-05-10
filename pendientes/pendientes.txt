@@ -1,0 +1,7 @@
+1. se genero la funcion obtenerProximaReferencia()
+2. se genero el sp reiniciarReferencia()
+3. se actualizo el sp generarArchivoPresentacion()
+
+pendientes
+revisar el error 	
+	#1449 - The user specified as a definer ('id17974059_llamacielovuorix'@'%') does not exist

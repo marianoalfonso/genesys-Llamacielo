@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="es-AR" dir="ltr">
+
+<head>
+
+    <!-- metas -->
+    <meta charset="utf-8">
+    <title>Bienvenidos a LlamaCielo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Somos un Call Center Solidario que pone su trabajo a disposición de las organizaciones de bien social.">
+    <meta name="keywords" content="ayuda, call center, ong, organizaciones, ayuda solidaria, buenos aires, argentina">
+    <link rel="canonical" href="https://www.llamacielo.com.ar" />
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="cache-control" content="no-cache" />
+
+    <!-- FAVICON  -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <meta name="theme-color" content="#4a90e2" />
+    <meta name="msapplication-navbutton-color" content="#4a90e2" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#4a90e2" />
+
+    <!-- css -->
+    <link href="css/socicon.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/iconsmind.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/icofont/icofont.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/flickity.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/stack-interface.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,400i,500,600,700" rel="stylesheet">
+
+    <!-- direct styles -->
+    <style>
+        fieldset.scheduler-border {
+            border: 1px solid #f3eeee !important;
+            padding: 1em 2em 2em 2em !important;
+            margin: 0 0 1.5em 0 !important;
+            -webkit-box-shadow: 0px 0px 0px 0px #000;
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+        
+        legend {
+            margin-bottom: 0 !important;
+        }
+        
+        legend.scheduler-border {
+            font-size: 1.2em !important;
+            font-weight: bold !important;
+            text-align: center !important;
+            width: auto;
+            padding: 0 5px 0 5px;
+            border-bottom: none;
+        }
+        
+        form {
+            max-width: 93%;
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+
+<body data-smooth-scroll-offset="77">
+    <a id="start"></a>
+
+    <div class="page-loader">
+        <div class="loader"></div>
+    </div>
+
+    <div class="nav-container">
+        <div>
+            <!-- MOBILE -->
+            <div class="bar bar--sm visible-xs bar--absolute">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3 col-md-2">
+                            <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo-dark.png"> <img class="logo logo-light" alt="logo" src="img/logo-dark.png"> </a>
+                        </div>
+                        <div class="col-9 col-md-10 text-right">
+                            <a href="#" class="hamburger-toggle" data-toggle-class="#menu1;hidden-xs hidden-sm"> <i class="icon icon--sm stack-interface stack-menu"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- DESKTOP -->
+            <nav id="menu1" class="bar bar--sm bar-1 hidden-xs bar--transparent bar--absolute">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-2 hidden-xs">
+                            <div class="bar__module">
+                                <a href="index.html"> <img class="logo logo-dark" alt="logo" src="img/logo-light.png"> <img class="logo logo-light" alt="logo" src="img/logo-light.png"> </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-11 col-md-12 text-right text-left-xs text-left-sm">
+                            <div class="bar__module">
+                                <ul class="menu-horizontal text-left">
+                                    <li>
+                                        <a href="quienessomos.html">Quienes Somos</a>
+                                    </li>
+                                    <li id="mostrarUsuario" class="hidden">
+                                        <span><i class="icofont-ui-user"></i></span> <span id="usuarioNombre"><strong>Nombre usuario</strong></span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="bar__module">
+                                <!-- btn login -->
+                                <a id="btnLogin" class="btn btn--sm btn--primary type--uppercase" data-modal-index="0"> <span class="btn__text">
+                                    Ingresar
+                                </span> </a>
+
+                                <!-- btn login false -->
+                                <!-- <a id="btnLoginFalse" class="btn btn--sm btn--primary type--uppercase" data-modal-index="0"> <span class="btn__text">
+                                    Ingresar
+                                </span> </a> -->
+
+                                <!-- btn logout -->
+                                <a id="btnLogout" class="btn btn--sm btn--primary type--uppercase" data-modal-index="0"> <span class="btn__text">
+                                    Logout
+                                </span> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="main-container">
+        <!-- section hero -->
+        <section class="cover height-100 imagebg parallax text-left" data-overlay="6">
+            <div class="background-image-holder">
+                <img id="bg-hero" alt="background" src="img/bg-hero.jpg" />
+            </div>
+            <div class="container pos-vertical-center">
+                <div class="row">
+                    <div class="col-md-7">
+                        <h1 class="titulo mt--1">Somos un Call Center Solidario que pone su trabajo a disposición de las organizaciones de bien social.</h1>
+                        <p class="lead">Queremos que puedas ayudar a través de nuestro espacio.</p>
+                        <a class="btn btn--primary type--uppercase inner-link" href="#quehacemos">
+                            <span class="btn__text">
+                                ¡Conocenos!
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <!--end of row-->
+            </div>
+            <!--end of container-->
+        </section>
+
+
+        <!-- QUE HACEMOS -->
+        <section id="quehacemos" class="text-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-10 col-lg-8">
+                        <h2 class="titulo">Qué hacemos</h2>
+                        <p class="lead">
+                            LlamaCielo es un Call Center Solidario que pone su trabajo a disposición de las organizaciones de bien social que admira. Busca en los proyectos que elije que reflejen el esfuerzo por hacer de nuestro mundo un lugar justo y agradable para todos y cada
+                            uno de nosotros. Creemos en la igualdad de oportunidades y tratamos de generarlas día a día.
+                        </p>
+                        <p class="lead">
+                            A través de Llama Cielo se puede dar difusión a los mejores proyectos a nivel nacional de inclusión, protección, amor y cuidado. Les ofrecemos la promoción de su propia misión y captación de donantes individuales sensibles y afines a su trabajo para cumplir
+                            con todos los objetivos propuestos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPINIONES -->
+        <section class="bg--secondary">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="slider slider--inline-arrows" data-arrows="true" data-children="3">
+                            <h2 class="titulo text-center">Trabajamos con</h2>
+                            <ul class="slides flickity-enabled is-draggable" tabindex="0">
+                                <div class="flickity-viewport">
+                                    <div class="flickity-slider" style="left: 0px; transform: translateX(-200%);">
+                                        <li class="slide" style="position: absolute; left: 0%;">
+                                            <div class="testimonial row justify-content-center">
+                                                <div class="col-lg-2 col-md-4 col-6 text-center">
+                                                    <a href="http://www.abrazodegol.org/" target="_blank" rel="nofollow" title="Visitá el sitio web de Abrazo de Gol"><img class="testimonial__image shadowed mt-20" alt="Image" src="img/abrazo-de-gol.jpg"></a>
+                                                </div>
+                                                <div class="col-lg-7 col-md-8 col-12 text-center-xs p-5">
+                                                    <span class="h3 ">“Gracias a Llama Cielo por ser parte de nuestro sueño y acompañarnos en este camino.”
+                                                    </span>
+                                                    <h5><a href="http://www.abrazodegol.org/" target="_blank" rel="nofollow" title="Visitá el sitio web de Abrazo de Gol">Abrazo de Gol</a></h5>
+                                                    <!-- <span>Abrazo de Gol</span> -->
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <!-- <li class="slide is-selected" style="position: absolute; left: 200%;">
+                                            <div class="testimonial row justify-content-center">
+                                                <div class="col-lg-2 col-md-4 col-6 text-center">
+                                                    <img class="testimonial__image shadowed mt-20" alt="Image" src="img/avatar-round-3.png">
+                                                </div>
+                                                <div class="col-lg-7 col-md-8 col-12 text-center-xs">
+                                                    <span class="h3">“¡Agradezco a Llama Cielo! a través de ellos, nuestra fundacion Ayudamos creció de manera imaginable en poco tiempo. ¡Muchas gracias a todo el equipo!.”
+                                    </span>
+                                                    <h5>Juan Vasquez</h5>
+                                                    <span>Presidente — Fundación Ayudamos</span>
+                                                </div>
+                                            </div>
+                                        </li>-->
+                                    </div>
+                                </div><button class="flickity-prev-next-button previous" type="button" aria-label="previous"><svg viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path></svg></button>
+                                <button class="flickity-prev-next-button next" type="button" aria-label="next"><svg viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg></button>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--end of row-->
+            </div>
+            <!--end of container-->
+        </section>
+
+        <!-- CTA -->
+        <section class="cover height-70 imagebg text-center parallax" data-gradient-bg="#1A2980,#02AAB0,#5f2c82,#26D0CE"><canvas id="granim-2" width="0" height="0"></canvas>
+            <div class="background-image-holder">
+                <img <img loading="lazy" alt="Donaciones-Llama Cielo" src="img/bg-cta.jpg">
+            </div>
+            <div class="container pos-vertical-center">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2 class="titulo">¡Si formas parte de una organización de bien social que necesita apoyo y donaciones para crecer, completa el formulario para aplicar al plan de difusión sin inversión de Llama Cielo!.</h2>
+                        <a id="contacto" class="btn btn--primary type--uppercase">
+                            <span class="btn__text">
+                                Formulario para Organizaciones
+                            </span>
+                        </a>
+
+                    </div>
+                </div>
+                <!--end of row-->
+            </div>
+            <!--end of container-->
+        </section>
+
+    </div>
+
+    <footer class="text-center space--sm footer-5  bg--dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--<div class="heading-block">
+                        <ul class="list-inline list--hover">
+                            <li>
+                                <a href="index.html">
+                                    <span>Inicio</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Soporte</span>
+                                </a>
+                            </li> 
+
+                    </ul>
+                </div>-->
+                    <div>
+                        <div class="text-center mb--1"><img alt="LlamaCielo" class="logo" src="img/logo-light.png"></div>
+                        <ul class="social-list list-inline list--hover">
+
+                            <!-- <li>
+                                <a href="#">
+                                    <i class="socicon socicon-twitter icon icon--xs"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="socicon socicon-facebook icon icon--xs"></i>
+                                </a>
+                            </li>-->
+
+                            <li>
+                                <a href="#">
+                                    <a href="https://www.instagram.com/llamacielo/" target="_blank" rel="nofollow" title="Visitá el Instagram de LLama Cielo"><i class="socicon socicon-instagram icon icon--xs"></i></a>
+                                </a>
+                            </li>
+                            <!-- <li>
+                                <a href="#">
+                                    <i class="icofont-brand-whatsapp icon--sm"></i>
+                                </a>
+                            </li>-->
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="type--fine-print">©
+                            <span class="update-year">2021</span> LlamaCielo.</span>
+                        <a class="type--fine-print" href="#">Privacy Policy</a>
+                        <a class="type--fine-print" href="#">Legal</a>
+                    </div>
+                </div>
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </footer>
+
+    <!-- modal form login -->
+    <div id="modalLogin" class="modal-container modal--prevent-close" data-modal-index="0">
+        <div class="modal-content section-modal">
+            <section class="unpad ">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="boxed boxed--lg bg--white text-center feature">
+                                <div class="modal-close modal-close-cross"></div>
+                                <!-- <h3>Loguéese para ingresar</h3> -->
+                                <div class="feature__body">
+                                    <!-- form login-->
+                                    <fieldset class="scheduler-border">
+                                        <legend id="legend" class="scheduler-border">Ingresar</legend>
+                                        <form id="form-login" autocomplete="off">
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <input type="number" name="dni" placeholder="Dni" data-mask="00000000">
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="inner-addon right-addon">
+                                                        <input id="password" type="password" name="pass" placeholder="Password" autocomplete="off">
+                                                        <i id="togglePassword" class="icofont-eye-blocked"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <button id="btnIngresar" class="btn btn--primary type--uppercase" type="submit">Ingresar</button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </fieldset>
+                                    <!-- fin form login -->
+
+                                    <div id="mensaje" class="hidden mt--1 mb--1"></div>
+
+                                    <div id="loader" class="form-contacto-cargando hidden mb-20">
+                                        <img src="img/loader.gif" alt="">
+                                    </div>
+
+                                    <!--  <span class="type--fine-print block mt-20">No recuerda su password?
+                                            <a href="#">Recuperar password</a>
+                                        </span> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+            </div>
+        </div>
+        <!-- fin modal form login -->
+
+        <!-- modal contacto -->
+        <div class="bg--estado modal-container contacto modal--prevent-close bg--white">
+            <div class="modal-content">
+                <div class="boxed boxed--lg text-center">
+                    <h2>Contacto</h2>
+                    <p>A la brevedad estaremos respondiendo su mensaje.</p>
+                    <div class="col-12">
+                        <form id="formulario" class="form-email text-left row mx-0">
+                            <div class="col-12">
+                                <label>Nombre*:</label>
+                                <!-- <input type="text" name="nombre" class="" required placeholder="Nombre de contacto"> -->
+                                <input type="text" name="nombre" class="" placeholder="Nombre de contacto">
+                            </div>
+                            <div class="col-12">
+                                <label>Nombre Entidad*:</label>
+                                <!-- <input type="text" name="entidad" class="" required placeholder="Nombre Entidad"> -->
+                                <input type="text" name="entidad" class="" placeholder="Nombre Entidad">
+                            </div>
+                            <div class="col-12">
+                                <label>Email*:</label>
+                                <!-- <input type="email" name="email" class="" required placeholder="Email de contacto"> -->
+                                <input type="email" name="email" class="" placeholder="Email de contacto">
+                            </div>
+                            <div class="col-12">
+                                <label>Teléfono*:</label>
+                                <!-- <input type="text" name="telefono" class="" required placeholder="Teléfono de contacto"> -->
+                                <input type="text" name="telefono" class="" placeholder="Teléfono de contacto">
+                            </div>
+                            <div class="col-12">
+                                <label>Página web o Red Social*:</label>
+                                <!-- <input type="text" name="webred" class="" required placeholder="Página web ó Red Social"> -->
+                                <input type="text" name="webred" class="" placeholder="Página web ó Red Social">
+                            </div>
+                            <div class="col-12">
+                                <label>Asunto*:</label>
+                                <!-- <input type="text" name="asunto" class="" required placeholder="Asunto de contacto"> -->
+                                <input type="text" name="asunto" class="" placeholder="Asunto de contacto">
+                            </div>
+                            <div class="col-12">
+                                <label>Mensaje*:</label>
+                                <!-- <textarea rows="4" name="mensaje" class="" required placeholder="Deje un mensaje"></textarea> -->
+                                <textarea rows="4" name="mensaje" class="" placeholder="Deje un mensaje"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn--primary type--uppercase">Enviar mensaje</button>
+                            </div>
+                        </form>
+
+                        <div id="respuesta" class="form-contacto-respuesta hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-close modal-close-cross boton-cerrar-formulario"></div>
+            </div>
+        </div>
+
+
+        <a class="back-to-top inner-link" href="#start" data-scroll-class="100vh:active">
+            <i class="stack-interface stack-up-open-big"></i>
+        </a>
+
+        <!-- boton whatsapp -->
+        <a class="boton-whatsapp hidden shadow hover" href="http://wa.me/5491150479955" data-scroll-class="78vh:active">
+            <i class="icofont-brand-whatsapp"></i>
+        </a>
+
+        <!-- boton email -->
+        <a id="contactoBoton" class="boton-email contact shadow" data-scroll-class="76vh:active">
+            <i class="icofont-envelope"></i>
+        </a>
+
+    </div>
+    <script src="js/jquery-3.1.1.min.js"></script>
+
+    <script src="js/flickity.min.js"></script>
+    <script src="js/isotope.min.js"></script>
+    <script src="js/ytplayer.min.js"></script>
+    <script src="js/lightbox.min.js"></script>
+    <script src="js/granim.min.js"></script>
+    <script src="js/smooth-scroll.min.js"></script>
+
+    <script src="js/parallax.js"></script>
+    <script src="js/jquery.mask.min.js"></script>
+    <script src="js/sweetalert2.all.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="modulos/main.js"></script>
+
+
+    <script>
+        $(window).on("load", function() {
+            $(".page-loader").fadeOut(1000);
+            $(".page-loader").remove();
+        });
+    </script>
+</body>
+
+</html>
